@@ -1,12 +1,26 @@
 require('dotenv').config()
-const { Bot, GrammyError, HttpError } = require('grammy')
+const { Bot, GrammyError, HttpError, session } = require('grammy')
+const { hydrate } = require('@grammyjs/hydrate')
+const { conversations, createConversation } = require('@grammyjs/conversations')
+const { freeStorage } = require('@grammyjs/storage-free')
 
 const commandsMenu = require('./modules/commands_menu')
 const registerCommands = require('./modules/commands')
-const { commandsHandler, callbackQuerryHandler } = require('./modules/handlers')
+const { commandsHandler, callbackQueryHandler } = require('./modules/handlers')
 const pool = require('../db')
+const { setupCreateDialog } = require('./modules/create-notes/create-note')
 
 const bot = new Bot(process.env.BOT_KEY)
+bot.use(hydrate())
+bot.use(
+    session({
+        initial: () => ({
+            isInDialog: false,
+        }),
+        storage: freeStorage(process.env.BOT_KEY),
+    }),
+)
+bot.use(conversations())
 
 const launchFunction = async () => {
     //Меню комманд
@@ -15,9 +29,12 @@ const launchFunction = async () => {
     // Комманды
     registerCommands(bot)
 
+    //Создание записи
+    setupCreateDialog(bot)
+
     //Обработчики
     commandsHandler(bot)
-    callbackQuerryHandler(bot)
+    callbackQueryHandler(bot)
 
     bot.start()
 }

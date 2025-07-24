@@ -1,4 +1,4 @@
-const pool = require('../../db.js')
+const pool = require('../../../db.js')
 
 async function createMessagesTable() {
     const create = `CREATE TABLE IF NOT EXISTS messages (

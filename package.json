@@ -13,7 +13,9 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "@grammyjs/conversations": "^2.1.0",
         "@grammyjs/hydrate": "^1.4.1",
+        "@grammyjs/storage-free": "^2.5.1",
         "dotenv": "^17.2.0",
         "grammy": "^1.37.0",
         "pg": "^8.16.3"
