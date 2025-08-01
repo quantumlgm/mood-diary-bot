@@ -3,12 +3,14 @@ const { Bot, GrammyError, HttpError, session } = require('grammy')
 const { hydrate } = require('@grammyjs/hydrate')
 const { conversations, createConversation } = require('@grammyjs/conversations')
 const { freeStorage } = require('@grammyjs/storage-free')
+const { Menu } = require('@grammyjs/menu')
 
-const commandsMenu = require('./modules/commands_menu')
-const registerCommands = require('./modules/commands')
+const commandsMenu = require('./modules/commands-menu')
+const { registerCommands } = require('./modules/commands')
 const { commandsHandler, callbackQueryHandler } = require('./modules/handlers')
 const pool = require('../db')
-const { setupCreateDialog } = require('./modules/create-notes/create-note')
+
+const { setupMainMenu } = require('./main-menu')
 
 const bot = new Bot(process.env.BOT_KEY)
 bot.use(hydrate())
@@ -29,8 +31,7 @@ const launchFunction = async () => {
     // Комманды
     registerCommands(bot)
 
-    //Создание записи
-    setupCreateDialog(bot)
+    setupMainMenu(bot)
 
     //Обработчики
     commandsHandler(bot)

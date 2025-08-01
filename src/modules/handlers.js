@@ -1,11 +1,10 @@
-const { mainKeyboards, helpKeyboards } = require('./keyboards')
-const { mainText, rest, helpText } = require('./text-templates')
+const { getMainMenu } = require('../main-menu')
+const { mainText, rest } = require('./text-templates')
 
-// Основные
 const commandsHandler = (bot) => {
     bot.on('message:text', async (ctx, next) => {
         if (ctx.session?.isInDialog) {
-            return next() // Передаём управление conversation
+            return next()
         }
         await ctx.reply(rest.noText, {
             reply_markup: listMenuCommands(),
@@ -14,35 +13,11 @@ const commandsHandler = (bot) => {
 }
 
 const callbackQueryHandler = (bot) => {
+    const mainMenu = getMainMenu()
     bot.callbackQuery('menu', async (ctx) => {
         await ctx.answerCallbackQuery()
         await ctx.reply(mainText.menuText, {
-            reply_markup: mainKeyboards.choiceMenu(),
-        })
-    })
-    bot.callbackQuery('back-menu', async (ctx) => {
-        await ctx.callbackQuery.message.editText(mainText.menuText, {
-            reply_markup: mainKeyboards.choiceMenu(),
-        })
-    })
-
-    // Помощь
-    bot.callbackQuery('help-menu', async (ctx) => {
-        await ctx.answerCallbackQuery()
-        await ctx.callbackQuery.message.editText(helpText.helpMenuText, {
-            reply_markup: helpKeyboards.createHelpKeyboard(),
-        })
-    })
-    bot.callbackQuery('list-menu-commands', async (ctx) => {
-        await ctx.answerCallbackQuery()
-        await ctx.callbackQuery.message.editText(helpText.commandsMenuList, {
-            reply_markup: helpKeyboards.backHelpKeyboard(),
-        })
-    })
-    bot.callbackQuery('back-help-menu', async (ctx) => {
-        await ctx.answerCallbackQuery()
-        await ctx.callbackQuery.message.editText(helpText.helpMenuText, {
-            reply_markup: helpKeyboards.createHelpKeyboard(),
+            reply_markup: mainMenu
         })
     })
 }

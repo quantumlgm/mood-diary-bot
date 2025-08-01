@@ -1,12 +1,3 @@
-const { createHelpKeyboard } = require('./keyboards')
-const { helpText } = require('./text-templates')
-
-sendHelp = async (ctx) => {
-    await ctx.reply(helpText.helpMenuText, {
-        reply_markup: createHelpKeyboard(),
-    })
-}
-
 getTodayDate = () => {
     const now = new Date()
 
@@ -18,8 +9,6 @@ getTodayDate = () => {
 
     return `${dayFormatted}.${monthFormatted}`
 }
-
-getTodayDate()
 
 module.exports = {
     sendHelp,

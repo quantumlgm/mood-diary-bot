@@ -1,32 +1,41 @@
+const { mainKeyboards, createNoteKeyboards } = require('../keyboards')
+
 const { createConversation } = require('@grammyjs/conversations')
 
 async function createDialog(conversation, ctx) {
-    ctx.session = ctx.session || {}
-    ctx.session.isInDialog = true
-
     try {
-        await ctx.reply('Какое у тебя настроение?')
-        const mood = await conversation.form.text()
+        const validMood = ['😣', '🙁', '😐', '🙂', '😃']
+        let mood
+        while (true) {
+            await ctx.reply('Как ваше настроение сегодня?', {
+                reply_markup: createNoteKeyboards.createChoiseMood(),
+            })
 
-        await ctx.reply('Напиши комментарий дня')
+            mood = await conversation.form.text()
+
+            if (validMood.includes(mood)) {
+                break
+            }
+            await ctx.reply(
+                'Пожалуйста, выберите смайлик из списка, используя клавиатуру.',
+                {
+                    reply_markup: { remove_keyboard: true },
+                },
+            )
+        }
+        await ctx.reply('Напиши заметку дня ', {
+            reply_markup: { remove_keyboard: true },
+        })
         const comment = await conversation.form.text()
 
         await ctx.reply('Отправь фото дня')
-        const photo = await conversation.form.photo()
+        const photo = await conversation.form.text()
 
         await ctx.reply('Спасибо, опрос окончен')
         return { mood, comment, photo }
-    } finally {
-        ctx.session.isInDialog = false
+    } catch (err) {
+        console.log(err)
     }
 }
 
-function setupCreateDialog(bot) {
-    bot.use(createConversation(createDialog))
-
-    bot.callbackQuery('create-post', async (ctx) => {
-        await ctx.conversation.enter('createDialog')
-    })
-}
-
-module.exports = { setupCreateDialog }
+module.exports = { createDialog }
