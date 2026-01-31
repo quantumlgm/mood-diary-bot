@@ -35,13 +35,14 @@ npm install
 
 Создайте файл `.env` в корне проекта:
 
-> BOT_KEY=your_telegram_bot_token_here
-> DB_USER_NAME=your_db_username
-> DB_HOST=localhost
-> DB_DATABASE=mooddiary
-> DB_PASSWORD=your_db_password
-> DB_PORT=5432
-
+```
+BOT_KEY=your_telegram_bot_token_here
+DB_USER_NAME=your_db_username
+DB_HOST=localhost
+DB_DATABASE=mooddiary
+DB_PASSWORD=your_db_password
+DB_PORT=5432
+```
 
 ### 3. Инициализация базы данных
 
