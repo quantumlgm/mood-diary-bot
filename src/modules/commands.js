@@ -3,6 +3,7 @@ const {
     helpMenu,
     createNoteMenu,
     historyNotesMenu,
+    statisticsMenu,
 } = require('../main-menu')
 const { mainKeyboards } = require('./keyboards')
 const {
@@ -10,6 +11,7 @@ const {
     helpText,
     createPostText,
     checkNoteHistory,
+    statisticsText,
 } = require('./text-templates')
 
 async function registerCommands(bot) {
@@ -36,6 +38,11 @@ async function registerCommands(bot) {
     bot.command('history', async (ctx) => {
         await ctx.reply(checkNoteHistory.checkTextNote, {
             reply_markup: historyNotesMenu,
+        })
+    })
+    bot.command('stats', async (ctx) => {
+        await ctx.reply(statisticsText.statisticsMenuText, {
+            reply_markup: statisticsMenu,
         })
     })
 }

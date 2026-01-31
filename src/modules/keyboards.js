@@ -164,6 +164,26 @@ const listMenuCommandsKeyboard = () => {
     )
 }
 
+// Клавиатуры: Статистика
+const statisticsMenuKeyboard = () => {
+    return new InlineKeyboard()
+        .text('📈 Общая статистика', 'stats-general')
+        .row()
+        .text('🔍 Глубокий анализ', 'stats-deep')
+        .row()
+        .text('📅 По дням недели', 'stats-weekdays')
+        .row()
+        .text('💡 Рекомендации', 'stats-recommendations')
+        .row()
+        .text('🏠 Назад в меню', 'back-menu')
+}
+
+const statisticsBackKeyboard = () => {
+    return new InlineKeyboard()
+        .text('🔙 Назад к статистике', 'back-to-statistics')
+        .text('🏠 В меню', 'back-menu')
+}
+
 module.exports = {
     mainKeyboards: {
         backMenuKeyboard,
@@ -188,5 +208,9 @@ module.exports = {
         checkHistoryKeyboard,
         viewReportKeyboard,
         confirmDeleteKeyboard,
+    },
+    statisticsKeyboards: {
+        statisticsMenuKeyboard,
+        statisticsBackKeyboard,
     },
 }

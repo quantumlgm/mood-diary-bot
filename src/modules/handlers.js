@@ -3,13 +3,15 @@ const {
     getReports,
     deleteReport,
 } = require('../db-operations/request-templates')
-const { mainMenu, commandList } = require('../main-menu')
-const { checkNoteKeyboard, commandsKeyboards } = require('./keyboards')
+const { getFullStatistics } = require('../db-operations/statistics')
+const { mainMenu, commandList, statisticsMenu } = require('../main-menu')
+const { checkNoteKeyboard, commandsKeyboards, statisticsKeyboards } = require('./keyboards')
 const {
     mainText,
     rest,
     helpText,
     checkNoteHistory,
+    statisticsText,
 } = require('./text-templates')
 const { historyNotesMenu } = require('../main-menu')
 
@@ -117,6 +119,50 @@ const callbackQueryHandler = (bot) => {
         } else {
             await ctx.answerCallbackQuery('Ошибка при удалении')
         }
+    })
+
+    // Обработчики статистики
+    bot.callbackQuery('stats-general', async (ctx) => {
+        await ctx.answerCallbackQuery()
+        const stats = await getFullStatistics(ctx.from.id, 30)
+        const text = statisticsText.formatStatistics(stats)
+        await ctx.editMessageText(text, {
+            reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+        })
+    })
+
+    bot.callbackQuery('stats-deep', async (ctx) => {
+        await ctx.answerCallbackQuery()
+        const stats = await getFullStatistics(ctx.from.id, 30)
+        const text = statisticsText.formatDeepAnalysis(stats)
+        await ctx.editMessageText(text, {
+            reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+        })
+    })
+
+    bot.callbackQuery('stats-weekdays', async (ctx) => {
+        await ctx.answerCallbackQuery()
+        const stats = await getFullStatistics(ctx.from.id, 90)
+        const text = statisticsText.formatWeekdayAnalysis(stats)
+        await ctx.editMessageText(text, {
+            reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+        })
+    })
+
+    bot.callbackQuery('stats-recommendations', async (ctx) => {
+        await ctx.answerCallbackQuery()
+        const stats = await getFullStatistics(ctx.from.id, 30)
+        const text = statisticsText.formatRecommendations(stats)
+        await ctx.editMessageText(text, {
+            reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+        })
+    })
+
+    bot.callbackQuery('back-to-statistics', async (ctx) => {
+        await ctx.answerCallbackQuery()
+        await ctx.editMessageText(statisticsText.statisticsMenuText, {
+            reply_markup: statisticsMenu,
+        })
     })
 }
 

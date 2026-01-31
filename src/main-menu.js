@@ -6,14 +6,16 @@ const {
     createPostText,
     helpText,
     checkNoteHistory,
+    statisticsText,
 } = require('./modules/text-templates')
 const { createDialog } = require('./create-note')
 const { getReports } = require('./db-operations/request-templates')
-const { checkNoteKeyboard } = require('./modules/keyboards')
+const { checkNoteKeyboard, statisticsKeyboards } = require('./modules/keyboards')
 
 const mainMenu = new Menu('main-menu')
 const createNoteMenu = new Menu('create-note')
 const historyNotesMenu = new Menu('history-notes')
+const statisticsMenu = new Menu('statistics-menu')
 const helpMenu = new Menu('help-menu')
 const commandList = new Menu('command-list')
 
@@ -29,6 +31,10 @@ async function setupMainMenu(bot) {
         .row()
         .submenu('✍️ Создать запись', 'create-note', async (ctx) => {
             await ctx.editMessageText(createPostText.initialTextNote)
+        })
+        .row()
+        .submenu('📊 Статистика и анализ', 'statistics-menu', async (ctx) => {
+            await ctx.editMessageText(statisticsText.statisticsMenuText)
         })
         .row()
         .submenu('📚 Помощь', 'help-menu', async (ctx) => {
@@ -71,8 +77,50 @@ async function setupMainMenu(bot) {
         await ctx.editMessageText(helpText.helpMenuText)
     })
 
+    statisticsMenu
+        .text('📈 Общая статистика', async (ctx) => {
+            const { getFullStatistics } = require('./db-operations/statistics')
+            const stats = await getFullStatistics(ctx.from.id, 30)
+            const text = statisticsText.formatStatistics(stats)
+            await ctx.editMessageText(text, {
+                reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+            })
+        })
+        .row()
+        .text('🔍 Глубокий анализ', async (ctx) => {
+            const { getFullStatistics } = require('./db-operations/statistics')
+            const stats = await getFullStatistics(ctx.from.id, 30)
+            const text = statisticsText.formatDeepAnalysis(stats)
+            await ctx.editMessageText(text, {
+                reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+            })
+        })
+        .row()
+        .text('📅 По дням недели', async (ctx) => {
+            const { getFullStatistics } = require('./db-operations/statistics')
+            const stats = await getFullStatistics(ctx.from.id, 90)
+            const text = statisticsText.formatWeekdayAnalysis(stats)
+            await ctx.editMessageText(text, {
+                reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+            })
+        })
+        .row()
+        .text('💡 Рекомендации', async (ctx) => {
+            const { getFullStatistics } = require('./db-operations/statistics')
+            const stats = await getFullStatistics(ctx.from.id, 30)
+            const text = statisticsText.formatRecommendations(stats)
+            await ctx.editMessageText(text, {
+                reply_markup: statisticsKeyboards.statisticsBackKeyboard(),
+            })
+        })
+        .row()
+        .back('🏠 Назад в меню', async (ctx) => {
+            await ctx.editMessageText(mainText.menuText)
+        })
+
     mainMenu.register(createNoteMenu)
     mainMenu.register(historyNotesMenu)
+    mainMenu.register(statisticsMenu)
     mainMenu.register(helpMenu)
     helpMenu.register(commandList)
 
@@ -85,5 +133,6 @@ module.exports = {
     helpMenu,
     createNoteMenu,
     historyNotesMenu,
+    statisticsMenu,
     commandList,
 }
