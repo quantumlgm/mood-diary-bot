@@ -1,121 +1,74 @@
-# 📘 MoodDiaryBot
+# MoodDiaryBot
 
-Telegram бот для отслеживания настроения, созданный на основе Grammy.js и PostgreSQL который помогает вести дневник эмоций.
+A Telegram bot for tracking daily moods and emotions, built with Grammy.js and PostgreSQL. It helps users maintain a consistent emotional journal through an intuitive chat interface.
 
-![Node.js](https://img.shields.io/badge/Node.js-18+-green)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
-![Grammy](https://img.shields.io/badge/Grammy-1.37-yellow)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+## Features
+* **Daily Logging**: Quick mood entry with emoji scales.
+* **Activity Tracking**: Categorize what influenced your mood (Self-care, Work, Social).
+* **Emotion Tagging**: Detailed mapping of specific feelings (Joy, Anger, Love).
+* **Entry History**: Review past logs to identify emotional patterns.
+* **Custom Notes**: Add free-text comments to any entry.
 
-## ✨ Возможности
+## Tech Stack
+* **Runtime**: Node.js 18+
+* **Framework**: Grammy.js
+* **Database**: PostgreSQL
+* **State Management**: @grammyjs/conversations & @grammyjs/storage-free
 
-- 📊 **Ежедневное записи настроения** 
-- 🏷️ **Категоризация активностей** 
-- 💾 **История записей** 
-- 📱 **Удобный интерфейс** 
-- 🔒 **Конфиденциальность**
+## Getting Started
 
-## 🛠️ Технологии
-
-- **Backend**: Node.js + Grammy.js
-- **База данных**: PostgreSQL
-- **Сессии**: @grammyjs/storage-free
-- **Меню**: @grammyjs/menu
-- **Диалоги**: @grammyjs/conversations
-
-## 🚀 Быстрый старт
-
-### 1. Клонирование и установка
-```
-git clone https://github.com/quantumlgm/mood-diary-bot
+### 1. Installation
+```bash
+git clone [https://github.com/quantumlgm/mood-diary-bot](https://github.com/quantumlgm/mood-diary-bot)
 cd mood-diary-bot
-npm install 
+npm install
 ```
-### 2. Настройка окружения
-
-Создайте файл `.env` в корне проекта:
-
-```
-BOT_KEY=your_telegram_bot_token_here
+### 2. Environment Setup
+Create a .env file in the root directory and fill in your credentials:
+```bash
+BOT_KEY=your_telegram_bot_token
 DB_USER_NAME=your_db_username
 DB_HOST=localhost
 DB_DATABASE=mooddiary
 DB_PASSWORD=your_db_password
 DB_PORT=5432
 ```
+### 3. Database Initialization
+Run the following command to set up the required tables:
 
-### 3. Инициализация базы данных
-
-```
+```bash
 npm run created-table
 ```
+### 4. Development
+Launch the bot with nodemon for auto-reloading:
 
-### 4. Запуск
-```
+```bash
 npm run nodemon
 ```
+##Bot Commands
+* /start - Initialize the bot and welcome message.
 
-## 🎮 Использование
+* /menu - Open the main navigation menu.
 
-### Основные команды:
+* /create - Start a new mood entry.
 
-- `/start` - Запустить бота и показать приветствие
-- `/menu` - Открыть главное меню
-- `/help` - Открыть меню помощи
-- `/create` - Создать новую запись о настроении
-- `/history` - Просмотреть историю записей
+* /history - View previous logs.
 
-### Процесс создания записи:
+* /help - Support and command overview.
 
-1. **Выбор настроения**: 😣 🙁 😐 🙂 😃  
-2. **Выбор активностей** по категориям:  
-   - 🏖️ Отдых и забота о себе  
-   - 💼 Работа и учеба  
-   - 👥 Общение и социум  
-3. **Выбор эмоций**:  
-   - ❤️ Эмоции любви 
-   - 😊 Эмоции радости 
-   - 😠 Эмоции злости 
-4. **Комментарий дня** - свободная заметка
-5. **Подтверждение** сохранения записи
+## Project Structure
+* src/modules/ — Handlers, keyboards, and command logic.
 
-## 📁 Структура проекта
-```
-src/
-├── modules/
-│   ├── keyboards.js          # Клавиатуры
-│   ├── commands.js           # Команды
-│   ├── handlers.js           # Обработчики
-│   ├── text-templates.js     # Текстовые шаблоны
-│   └── commands-menu.js      # Меню команд
-├── db-operations/
-│   ├── db.js                 # Подключение к БД
-│   ├── request-templates.js  # SQL запросы
-│   └── created-table.js      # Создание таблицы
-├── main-menu.js              # Меню
-├── create-note.js            # Создания записи
-└── index.js                  # Запуск бота
-```
+* src/db-operations/ — Database connection and SQL templates.
 
-## 🌐 Развертывание
+* src/create-note.js — Conversation flow for new entries.
 
-### Локальная разработка
+* src/index.js — Main entry point.
 
-1. Установите PostgreSQL  
-2. Создайте базу данных  
-3. Настройте `.env` файл  
-4. Запустите миграции: `npm run created-table`  
-5. Запустите бота: `npm run nodemon`
+## Deployment
+The bot is ready for local deployment or hosting on platforms like Heroku (with the PostgreSQL add-on). Ensure all environment variables are correctly set in your production settings.
 
-### Production окружение
+## Contact
+* Issues: GitHub Issues
 
-Рекомендуемые платформы:  
-- **Heroku** с PostgreSQL аддоном  
-
-## 📞 Поддержка
-
-Если у вас есть вопросы или предложения:  
-- Создайте [Issue](https://github.com/quantumlgm/mood-diary-bot/issues)  
-- Напишите в Telegram: [@quantumlgm](https://t.me/quantumlgm)  
----
-⭐ Если проект вам понравился, не забудьте поставить звезду!
+* Developer: @quantumlgm
