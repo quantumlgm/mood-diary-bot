@@ -1,4 +1,4 @@
-# MoodDiaryBot
+# Emolog — Telegram bot for tracking
 
 A Telegram bot for tracking daily moods and emotions, built with Grammy.js and PostgreSQL. It helps users maintain a consistent emotional journal through an intuitive chat interface.
 
